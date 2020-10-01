@@ -9,9 +9,11 @@
 
 FILE *infile;
 ulg image_width, image_height, image_rowbytes;
-int image_channels;
+png_byte image_channels;
+png_byte image_color_type;
+png_byte image_bit_depth;
 uch *image_data;
-static double display_exponent;
+double display_exponent;
   
 FILE* read_infile(string filename){
 
@@ -45,6 +47,9 @@ FILE* read_infile(string filename){
             }
             ++error;
 	}
+
+
+	
   if (error) fclose(infile);
 
 
@@ -53,6 +58,19 @@ FILE* read_infile(string filename){
         fprintf(stderr, PROGNAME ":  aborting.\n");
         exit(2);
     }
+    
+   	// save image values
+  /*    png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,NULL,NULL,NULL);
+    info_ptr = png_create_info_struct(png_ptr);
+  */  
+	image_channels = png_get_channels(png_ptr, info_ptr);
+	image_color_type = png_get_color_type(png_ptr, info_ptr);
+	image_bit_depth = png_get_bit_depth(png_ptr, info_ptr);    
+  
+  /*image_color_type = info_ptr->color_type;
+  image_bit_depth = info_ptr->bit_depth;
+  image_channels = info_ptr->channels;
+  */
   return infile;
 }
 
@@ -61,7 +79,6 @@ uch* get_image()
   display_exponent = 2.2;
     image_data = readpng_get_image(display_exponent, &image_channels,
       &image_rowbytes);
-       
     return image_data;
     
 }
@@ -74,7 +91,7 @@ uch* get_red(uch* image)
   int j;
 
   // get red buffer
-  if((red = (uch *)malloc(image_width*image_height)) == NULL){
+  if((red = (uch *)malloc(image_rowbytes*image_height)) == NULL){
     fprintf(stderr, PROGNAME ": Not enough memory\n");
     return NULL;
   }
@@ -82,7 +99,7 @@ uch* get_red(uch* image)
   
   for(i=0, j=0; i< image_rowbytes*image_height; i++)
     {
-      if( i%3 == 0)
+      if( i%image_channels == 0)
 	{
 	  red[j] = image[i];
 	  j++;
@@ -101,7 +118,7 @@ void set_red(uch* image, uch* red)
 
   for(i=0, j=0; i< image_rowbytes*image_height; i++)
     {
-      if( i%3 == 0)
+      if( i%image_channels == 0)
 	{
 	  image[i] = red[j];
 	  j++;
@@ -128,7 +145,7 @@ void write_outfile(char* file_name)
 
 
         /* initialize stuff */
-        png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	       png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
         if (!png_ptr)
 	  fprintf(stderr,"[write_png_file] png_create_write_struct failed");
@@ -147,11 +164,9 @@ void write_outfile(char* file_name)
         if (setjmp(png_jmpbuf(png_ptr)))
                 fprintf(stderr,"[write_png_file] Error during writing header");
 
-	bit_depth = 8;
-	color_type = 2;
-	
+		
         png_set_IHDR(png_ptr, info_ptr, image_width, image_height,
-                     bit_depth, color_type, 0,0,0);
+                     image_bit_depth, image_color_type, 0,0,0);
 
         png_write_info(png_ptr, info_ptr);
 

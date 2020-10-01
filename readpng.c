@@ -66,8 +66,8 @@
 #endif
 
 
-static png_structp png_ptr = NULL;
-static png_infop info_ptr = NULL;
+png_structp png_ptr = NULL;
+png_infop info_ptr = NULL;
 
 
 static int  bit_depth, color_type;
@@ -204,7 +204,7 @@ int readpng_get_bgcolor(uch *red, uch *green, uch *blue)
 
 /* display_exponent == LUT_exponent * CRT_exponent */
 
-uch *readpng_get_image(double display_exponent, int *pChannels, ulg *pRowbytes)
+uch *readpng_get_image(double display_exponent, png_byte *pChannels, ulg *pRowbytes)
 {
     double  gamma;
     png_uint_32  i, rowbytes;

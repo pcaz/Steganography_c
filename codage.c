@@ -146,7 +146,7 @@ void codage(int argc, string *argv)
 
   //so, we have all the necessary arguments (maybe line also)
 
-  printf("\n%s\n\n",message);
+  //  printf("\n%s\n\n",message);
   
   read_infile(inFileName);
   image = get_image();

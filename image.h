@@ -8,8 +8,10 @@
 
   extern FILE *infile;
   extern ulg image_width, image_height, image_rowbytes;
-  extern int image_channels;
   extern uch *image_data;
+  extern png_byte image_channels;
+  extern png_byte image_color_type;
+  extern png_byte image_bit_depth;
   extern uch *image;
   extern uch *red;
   
@@ -21,13 +23,11 @@ extern void set_red(uch* image, uch* red);
 extern void set_image(uch* image);
 extern void write_outfile( string filename);
 
-png_byte color_type;
-png_byte bit_depth;
-
-png_structp png_ptr;
-png_infop info_ptr;
 extern unsigned int number_of_passes;
 
+
+extern png_structp png_ptr;
+extern png_infop info_ptr;
 
 #endif /* _IMAGE_H */
 
