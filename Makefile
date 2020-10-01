@@ -16,11 +16,13 @@ ZINC = -I/usr/include
 ZLIBd = -L$(ZDIR) -lz			# dynamically linked against zlib
 ZLIBs = $(ZDIR)/libz.a			# statically linked against zlib
 
-XINC = -I/usr/include			# new X distributions (X.org, etc.)
-XLIB = -L/usr/lib/x86_64-linux-gnu -lX11
+#XINC = -I/usr/include			# new X distributions (X.org, etc.)
+#XLIB = -L/usr/lib/x86_64-linux-gnu -lX11
+XINC =
+XLIB =
 
-
-INCS = $(PNGINC) $(ZINC) $(XINC)
+INCS = $(PNGINC) $(ZINC)
+#$(XINC)
 
 
 RLIBSd =  $(PNGLIBd) $(ZLIBd) $(XLIB) -lm
@@ -45,7 +47,7 @@ RPNG   = stegano
 ROBJS  = stegano.o codage.o decodage.o util.o readpng.o image.o
 
 STATIC_EXES  = stegano
-#DYNAMIC_EXES = main
+#DYNAMIC_EXES = stegano
 
 EXES = $(STATIC_EXES)
 #EXES = $(DYNAMIC_EXES)
