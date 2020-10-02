@@ -44,7 +44,7 @@ O = .o
 E =
 RPNG   = stegano
 
-ROBJS  = stegano.o codage.o decodage.o util.o readpng.o image.o
+ROBJS  = stegano.o codage.o decodage.o util.o readpng.o image_png.o
 
 STATIC_EXES  = stegano
 #DYNAMIC_EXES = stegano
@@ -67,8 +67,8 @@ all:	$(EXES)
 $(RPNG)$(E): $(ROBJS) config.h
 	$(LD) $(ROBJS) -o $@ $(LDFLAGSs)
 
-image.o:	image.c image.h
-	$(CC) -c $(CFLAGS) image.c
+image_png.o:	image_png.c image_png.h
+	$(CC) -c $(CFLAGS) image_png.c
 
 
 

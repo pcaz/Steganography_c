@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "image.h"
+#include "image_png.h"
 #include "config.h"
 
 
@@ -17,7 +17,9 @@ void codage(int argc, string *argv)
   unsigned int val=1;
   unsigned int initial;
   int msg_length;
-
+  _fct *_fptr_in;
+  _fct *_fptr_out;
+  
   // loop indexes 
   int i,j,k;
   
@@ -146,11 +148,17 @@ void codage(int argc, string *argv)
 
   //so, we have all the necessary arguments (maybe line also)
 
-  //  printf("\n%s\n\n",message);
+  // load functions
+
+  _fptr_in = &_fptr_png;
+  _fptr_out = &_fptr_png;
   
-  read_infile(inFileName);
-  image = get_image();
-  red = get_red(image);
+  //  (*read_infile) = _fptr->read_infile; 
+    printf("\n%s\n\n",message);
+  
+  _fptr_in->read_infile(inFileName);
+  image =_fptr_in-> get_image();
+  red =_fptr_in->get_red(image);
 
   initial = (line-1) * image_width;
   
@@ -188,11 +196,11 @@ void codage(int argc, string *argv)
 	  
     }
   
-  set_red(image,red);
+  _fptr_out->set_red(image,red);
   
-  set_image(image);
+  _fptr_out->set_image(image);
 
-  write_outfile(outFileName);
+  _fptr_out->write_outfile(outFileName);
 }
 
  

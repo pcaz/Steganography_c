@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "config.h"
-#include "image.h"
+#include "image_png.h"
 
 void decodage(int argc, string *argv)
 {
@@ -16,7 +16,8 @@ void decodage(int argc, string *argv)
   unsigned int initial;
   char msg_char;
   char *_message, *msg;
-
+  _fct *_fptr_in;
+  
    // loop indexes 
   int i,j;
 
@@ -93,9 +94,11 @@ void decodage(int argc, string *argv)
      
      //so, we have all the necessary arguments (maybe line also)
 
-    read_infile(inFileName);
-    image = get_image();
-    red = get_red(image);
+     _fptr_in = &_fptr_png;
+     
+    _fptr_in->read_infile(inFileName);
+    image =_fptr_in->get_image();
+    red =_fptr_in->get_red(image);
 
     initial = (line-1) * image_width;
 

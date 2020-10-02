@@ -29,5 +29,15 @@ extern unsigned int number_of_passes;
 extern png_structp png_ptr;
 extern png_infop info_ptr;
 
+
+extern _fct _fptr_png;
+
+FILE* read_infile_png(char * filename);
+unsigned char* get_image_png();
+unsigned char* get_red_png(unsigned char* image);
+void set_red_png(unsigned char* image, unsigned char* red);
+void set_image_png(unsigned char *image);
+void write_outfile_png(char* filename);
+
 #endif /* _IMAGE_H */
 

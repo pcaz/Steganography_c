@@ -3,8 +3,25 @@
 #include <stddef.h>
 #include <png.h>
 #include "config.h"
-#include "image.h"
+#include "image_png.h"
 #include "readpng.h"
+
+
+_fct _fptr_png =
+  {
+   &read_infile_png,
+   &get_image_png,
+   &get_red_png,
+   &set_red_png,
+   &set_image_png,
+   &write_outfile_png
+  };
+
+
+
+
+
+
 
 
 FILE *infile;
@@ -15,10 +32,19 @@ png_byte image_bit_depth;
 uch *image_data;
 double display_exponent;
   
-FILE* read_infile(string filename){
+FILE* read_infile_png(string filename){
 
   static int error = 0;
   static int rc;
+  /*
+_fptr.read_infile = &read_infile;
+_fptr.get_image = &get_image;
+_fptr.get_red = &get_red;
+_fptr.set_red = &set_red;
+_fptr.set_image = null;
+_fptr.write_outfile = &wfite_outfile;
+ */
+
   
   if (!(infile = fopen(filename, "rb"))) {
         fprintf(stderr, PROGNAME ":  can't open PNG file [%s]\n", filename);
@@ -60,21 +86,16 @@ FILE* read_infile(string filename){
     }
     
    	// save image values
-  /*    png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,NULL,NULL,NULL);
-    info_ptr = png_create_info_struct(png_ptr);
-  */  
+
 	image_channels = png_get_channels(png_ptr, info_ptr);
 	image_color_type = png_get_color_type(png_ptr, info_ptr);
 	image_bit_depth = png_get_bit_depth(png_ptr, info_ptr);    
   
-  /*image_color_type = info_ptr->color_type;
-  image_bit_depth = info_ptr->bit_depth;
-  image_channels = info_ptr->channels;
-  */
+
   return infile;
 }
 
-uch* get_image()
+uch* get_image_png()
 {
   display_exponent = 2.2;
     image_data = readpng_get_image(display_exponent, &image_channels,
@@ -83,7 +104,7 @@ uch* get_image()
     
 }
 
-uch* get_red(uch* image)
+uch* get_red_png(uch* image)
 {
 
   uch *red;
@@ -111,7 +132,7 @@ uch* get_red(uch* image)
   
 }
 
-void set_red(uch* image, uch* red)
+void set_red_png(uch* image, uch* red)
 {
   int i;
   int j;
@@ -128,11 +149,12 @@ void set_red(uch* image, uch* red)
   free(red);
 }
 
-void set_image(uch* image)
+void set_image_png(uch* image)
 {
 
 }
-void write_outfile(char* file_name)
+
+void write_outfile_png(char* file_name)
 //void write_png_file(char* file_name)
 {
   int i;
