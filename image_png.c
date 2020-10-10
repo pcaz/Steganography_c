@@ -7,7 +7,7 @@
 #include "readpng.h"
 
 
-_fct _fptr_png =
+struct _fct _fptr_png =
   {
    &read_infile_png,
    &get_image_png,
@@ -26,10 +26,6 @@ _fct _fptr_png =
 
 FILE *infile;
 ulg image_width, image_height, image_rowbytes;
-png_byte image_channels;
-png_byte image_color_type;
-png_byte image_bit_depth;
-uch *image_data;
 double display_exponent;
   
 FILE* read_infile_png(string filename){

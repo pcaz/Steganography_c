@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "config.h"
+#include "image_jpg.h"
 #include "image_png.h"
+
+unsigned char *image_data;
 
 void decodage(int argc, string *argv)
 {
@@ -14,9 +17,9 @@ void decodage(int argc, string *argv)
   int msg_length=0;
   unsigned int val=1;
   unsigned int initial;
-  char msg_char;
+   char msg_char;
   char *_message, *msg;
-  _fct *_fptr_in;
+  struct _fct *_fptr_in;
   
    // loop indexes 
   int i,j;
@@ -94,7 +97,17 @@ void decodage(int argc, string *argv)
      
      //so, we have all the necessary arguments (maybe line also)
 
-     _fptr_in = &_fptr_png;
+  if (strcmp(extension(inFileName) ,".png")==0){ _fptr_in = &_fptr_png;}
+  //  if (strcmp(extension(inFileName),".jpg")==0){ _fptr_in = &_fptr_jpg;}
+  //if (strcmp(extension(inFileName),".jpeg")==0){ _fptr_in = &_fptr_jpg;}
+  
+
+  
+
+
+  if (_fptr_in == NULL) error("Type of input file not supported");
+  
+  
      
     _fptr_in->read_infile(inFileName);
     image =_fptr_in->get_image();

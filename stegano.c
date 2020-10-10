@@ -21,15 +21,16 @@
 
 
 
-
 int main(int argc, string *argv)
 {
 
+  
   // jump appname (arg[0])
   
   argv++;
   argc--;
 
+  
   if(argc<1) {usage();}
 
   
@@ -43,9 +44,14 @@ int main(int argc, string *argv)
   else { 
     usage();
   }
-  
-} 
- 
+}
+
+
+void error(string msg) {
+  fprintf(stderr,"%s\n",msg);
+     exit(1);
+
+}
 
   
 

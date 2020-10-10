@@ -2,7 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "image_png.h"
+#include "image_jpg.h"
 #include "config.h"
+
+unsigned char image_channels;
+unsigned char image_color_type;
+unsigned char image_bit_depth;
 
 
 void codage(int argc, string *argv)
@@ -17,8 +22,9 @@ void codage(int argc, string *argv)
   unsigned int val=1;
   unsigned int initial;
   int msg_length;
-  _fct *_fptr_in;
-  _fct *_fptr_out;
+  
+  struct _fct *_fptr_in = NULL;
+  struct _fct *_fptr_out = NULL;
   
   // loop indexes 
   int i,j,k;
@@ -149,12 +155,23 @@ void codage(int argc, string *argv)
   //so, we have all the necessary arguments (maybe line also)
 
   // load functions
+  if (strcmp(extension(inFileName) ,".png")==0){ _fptr_in = &_fptr_png;}
+  if (strcmp(extension(outFileName),".png")==0){ _fptr_out = &_fptr_png;}
+  if (strcmp(extension(inFileName),".jpg")==0){ _fptr_in = &_fptr_jpg;}
+  if (strcmp(extension(inFileName),".jpeg")==0){ _fptr_in = &_fptr_jpg;}
 
-  _fptr_in = &_fptr_png;
-  _fptr_out = &_fptr_png;
+  if ((strcmp(extension(outFileName),".jpg")==0) ||  (strcmp(extension(outFileName),".jpeg")==0)){
+    error("Unable to create a JPEG or JPG output file format, only PNG is supported !");
+  }
+
   
-  //  (*read_infile) = _fptr->read_infile; 
-    printf("\n%s\n\n",message);
+
+
+  if (_fptr_in == NULL) error("Type of input file not supported");
+  if (_fptr_out == NULL) error("Type of output file not supported");
+  
+
+  //    printf("\n%s\n\n",message);
   
   _fptr_in->read_infile(inFileName);
   image =_fptr_in-> get_image();

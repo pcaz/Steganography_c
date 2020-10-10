@@ -63,6 +63,18 @@ void badArgs(){
 }
 
 
+// return filename extension (ex: png, jpg, jpeg...)
+
+char* extension(char *fileName)
+{
+  char* lastPoint;
+
+  lastPoint = strrchr(fileName, '.');
+
+  return lastPoint;
+}
+  
+
 #ifdef DEBUG
 void trace(char* ctx, char* msg)
 {
